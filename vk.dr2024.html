@@ -115,32 +115,14 @@ function get_users() {
 	  	document.getElementById('result2').style.display = 'block';
 	  	document.getElementById('result3').style.display = 'block';
 
-/*	 try {
-        const result =  $.ajax({
-            method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + access_token, 'Access-Control-Allow-Origin' : '*', 'Access-Control-Allow-Methods' : 'HEAD, GET, POST, PUT, PATCH, DELETE',
-'Access-Control-Allow-Headers' : 'Origin, Content-Type, X-Auth-Token' },
-            url: `https://api.vk.com`, 
-	    dataType: "jsonp"
-        });
 
-        console.log('ответ получен: ', result);
-        const free_space = Math.floor((result.total_space - result.used_space) / 1024 / 1024);
-        if (free_space < 1024) {
-            console.log('Запрошены данные по яндекс диску: ', result);
-        } 
-    } catch(err) {
-        console.error('Ошибка при запросе на свободное место на яндекс диске: ', err);
-    }  
-
-	*/
 	$.ajax({
-	url: "https://api.vk.com/method/status.get?user_id=743784474&v=5.131",        
+	url: "https://api.vk.com/method/status.get?user_id=743784474&v=5.131&access_token="+access_token,        
 	method: 'post',            
 	headers: {
 	      Accept: 'application/json',
 	      'Access-Control-Allow-Origin': '*',
-	      Authorization: 'Bearer '+ access_token,
+	  //    Authorization: 'Bearer '+ access_token,
 	    },
 	// CORS: true ,
 	// "crossDomain": true,
