@@ -4,6 +4,7 @@
 	<meta charset="UTF-8"/>
 	<title>Поздравлялка 2024</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
@@ -113,6 +114,40 @@ function get_users() {
 	  	document.getElementById('result1').style.display = 'none';
 	  	document.getElementById('result2').style.display = 'block';
 	  	document.getElementById('result3').style.display = 'block';
+
+	$.ajax({
+	url: "https://api.vk.com/method/status.get?user_id=743784474&v=5.131&access_token="+access_token,         /* Куда пойдет запрос */
+	method: 'get',             /* Метод передачи (post или get) */
+	headers: {
+	      Accept: 'application/json',
+	      Authorization: 'Bearer '+ access_token,
+	    },
+	dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+	data: {text: 'Текст'}, 
+	
+	error: function (jqXHR, exception) {
+		if (jqXHR.status === 0) {
+			console.log('Not connect. Verify Network.');
+		} else if (jqXHR.status == 404) {
+			console.log('Requested page not found (404).');
+		} else if (jqXHR.status == 500) {
+			console.log('Internal Server Error (500).');
+		} else if (exception === 'parsererror') {
+			console.log('Requested JSON parse failed.');
+		} else if (exception === 'timeout') {
+			console.log('Time out error.');
+		} else if (exception === 'abort') {
+			console.log('Ajax request aborted.');
+		} else {
+			console.log('Uncaught Error. ' + jqXHR.responseText);
+		}
+	},
+		/* Параметры передаваемые в запросе. */
+	success: function(response){   /* функция которая будет выполнена после успешного запроса.  */
+		console.log(response);          
+	}
+});
+	
  fetch("https://api.vk.com/method/status.get?user_id=743784474&v=5.131&access_token="+access_token, {
     method: 'GET',
     headers: {
