@@ -150,7 +150,8 @@ function get_users() {
 	},
 		
 	success: function(response){   
-		
+		alert('ответ получен');
+		alert(response.items.lenght);
 		console.log('ответ получен!');          
 		 console.log(response);    
 		build_pre(response.response);
@@ -160,6 +161,7 @@ function get_users() {
 }
 
 function build_pre(response) {
+	alert('начинаем выводить именниников');
 	console.log(response);    
 	console.log(response.items);    
 	document.getElementById('result2').innerHTML = 
@@ -194,7 +196,7 @@ function build_pre(response) {
                         
 					    document.getElementById('photos').innerHTML += photos;
 					    document.getElementById('attachments').innerHTML += attachments;
-
+	alert('закончили вывод');
 }
 
 function copyText() {
