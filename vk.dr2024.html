@@ -199,6 +199,27 @@ function build_pre(response) {
 					    document.getElementById('attachments').innerHTML += attachments;
 
 }
+
+function copyText() {
+			//нашли наш контейнер
+		  var ta = document.getElementById('result2'); 
+		  //производим его выделение
+		  var range = document.createRange();
+		  range.selectNode(ta); 
+		  window.getSelection().addRange(range); 
+		 
+		  //пытаемся скопировать текст в буфер обмена
+		  try { 
+		    document.execCommand('copy'); 
+		    alert('Скопировано.'); 
+		  } catch(err) { 
+		    alert('Не удалось скопировать, скопируйте вручную.'); 
+		  } 
+		  //очистим выделение текста, чтобы пользователь "не парился"
+		  window.getSelection().removeAllRanges();
+
+}
+			
 	
 	</script>
 	
