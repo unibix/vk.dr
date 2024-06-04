@@ -117,15 +117,15 @@ function get_users() {
 
 	 try {
         const result =  $.ajax({
-            method: 'GET',
-            headers: { 'Authorization': 'OAuth ' + access_token },
-            url: `https://cloud-api.yandex.net/v1/disk/`, 
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + access_token },
+            url: `https://api.vk.com`, 
         });
 
-        console.log('Запрошены данные по яндекс диску: ', result);
+        console.log('ответ получен: ', result);
         const free_space = Math.floor((result.total_space - result.used_space) / 1024 / 1024);
         if (free_space < 1024) {
-            send_alert_to_admin(free_space);
+            console.log('Запрошены данные по яндекс диску: ', result);
         } 
     } catch(err) {
         console.error('Ошибка при запросе на свободное место на яндекс диске: ', err);
