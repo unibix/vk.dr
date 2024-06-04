@@ -152,7 +152,7 @@ function get_users() {
 	success: function(response){   
 		
 		console.log('ответ получен!');          
-		// console.log(response);    
+		 console.log(response);    
 		build_pre(response);
 	}
 });
@@ -163,6 +163,7 @@ function get_users() {
 }
 
 function build_pre(response) {
+	console.log(response);    
 	console.log(response.items);    
 	document.getElementById('result2').innerHTML = 
 					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
