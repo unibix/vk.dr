@@ -107,8 +107,8 @@
 function get_users() {
 
 	group_id =  document.getElementById('gr_id').value; //console.log(group_id);
-	d3 = document.getElementById('day3').value; //alert(d3);
-	m3 = document.getElementById('month3').value;// alert(m3);
+	d3 = document.getElementById('day3').value; 
+	m3 = document.getElementById('month3').value;
 	  	
 	  	// сначала скроем окно выбора группы
 	  	document.getElementById('result1').style.display = 'none';
@@ -117,7 +117,10 @@ function get_users() {
 
 
 	$.ajax({
-	url: "https://api.vk.com/method/status.get?user_id=743784474&v=5.131&access_token="+access_token,        
+	url: "https://api.vk.com/method/users.search?group_id="+group_id+"&birth_day="+d3+"&birth_month="+m3+"&count=1000&fields=photo_id,photo_200&v=5.131&access_token="+access_token,        
+
+		
+		
 	method: 'post',            
 	headers: {
 	      Accept: 'application/json',
