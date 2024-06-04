@@ -150,7 +150,7 @@ function get_users() {
 	},
 		
 	success: function(response){   
-		alert('ответ получен, найдено именниников '+ response.items.lenght);
+		alert('ответ получен, найдено именниников '+ response.items.length);
 
 		console.log('ответ получен!');          
 		 console.log(response);    
@@ -169,10 +169,10 @@ function build_pre(response) {
                         
 
 
-					    var out = '';
-					    var attachments = '';
-					    var photos = '';
-					    for (var i in response.items) {
+					    let out = '';
+					    let attachments = '';
+					    let photos = '';
+					    for (let i in response.items) {
 					    	
 					        out += '@id'+response.items[i].id+' (' + response.items[i].first_name + ' '+response.items[i].last_name+ 	 ') '+ 	  '';
 					    
@@ -201,9 +201,9 @@ function build_pre(response) {
 
 function copyText() {
 			//нашли наш контейнер
-		  var ta = document.getElementById('result2'); 
+		  let ta = document.getElementById('result2'); 
 		  //производим его выделение
-		  var range = document.createRange();
+		  let range = document.createRange();
 		  range.selectNode(ta); 
 		  window.getSelection().addRange(range); 
 		 
