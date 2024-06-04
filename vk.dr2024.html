@@ -2,11 +2,51 @@
 <html lang="ru">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Поздравлялка с ДР</title>
+	<title>Поздравлялка 2024</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
 
+	<script>
+		// проверяем есть ли access_token
+		if(access_token) {
+			console.log('access_token есть');
+			alert(access_token);
+			//start_app();
+
+		}
+		elseif(get_access_token_from_url()) {
+			// только получили токен
+			//start_app();
+		}
+		else {
+			// получаем токен
+			url_for_token='https://oauth.vk.com/authorize?client_id=7858447&display=page&redirect_uri=https://unibix.github.io/vk.dr/vk.dr2024.html&scope=friends&response_type=token&v=5.131&state=123456';
+			//редиректим
+			window.location.replace(url_for_token);
+			
+		}
+
+	// возвращает true если в урле есть токен	
+	function get_access_token_from_url() {
+		str=window.location.href;
+		console.log(str);
+		// получаем и сохраняем токен
+		// или возвращаем false
+		if (str.indexOf("#access_token=") != -1) {
+		    access_token = '44';
+			alert("токен есть"); 
+			return true;
+		}
+		else {
+			alert("токена нет"); 
+			return false;
+		}
+
+		
+	}
+	</script>
+	
 <div id="result1"></div>
 <textarea id="result2" style="display: none;">Идет загрузка именинников...</textarea>
 <div id="photos"></div>
@@ -39,7 +79,9 @@
 	#attachments {display:none;background: green;height: 50px;overflow: scroll;}
 	
 </style>
-<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+	
+<!-- <script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>-->
+	<!--
 <script>
 	  VK.init(function() {
 	     // API initialization succeeded
@@ -212,6 +254,6 @@ dtlInput.value = my0830;
 
 
 </script>
-
+-->
 </body>
 </html>	
