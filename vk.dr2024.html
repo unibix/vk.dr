@@ -147,25 +147,6 @@ function get_users() {
 		console.log(response);          
 	}
 });
-	
- fetch("https://api.vk.com/method/status.get?user_id=743784474&v=5.131&access_token="+access_token, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: 'Bearer '+ access_token,
-    },
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
-      }
-	console.log(response);
-      return response.json();
-    })
-    .catch(error => {
-      console.log('error: ', error);
-    });
-	
 
 
 	document.getElementById('result2').innerHTML = 
