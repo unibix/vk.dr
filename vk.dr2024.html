@@ -150,8 +150,8 @@ function get_users() {
 	},
 		
 	success: function(response){   
-		alert('ответ получен');
-		alert(response.items.lenght);
+		alert('ответ получен, найдено именниников '+ response.count);
+
 		console.log('ответ получен!');          
 		 console.log(response);    
 		build_pre(response.response);
