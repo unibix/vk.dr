@@ -9,7 +9,7 @@
 
 	<script>
 		// проверяем есть ли access_token
-		if(access_token) {
+		if(typeof access_token !== 'undefined') {
 			console.log('access_token есть');
 			alert(access_token);
 			//start_app();
