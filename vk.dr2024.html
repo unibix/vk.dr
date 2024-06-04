@@ -150,10 +150,10 @@ function get_users() {
 	},
 		
 	success: function(response){   
-		alert('ответ получен, найдено именниников '+ response.items.length);
-
 		console.log('ответ получен!');          
-		 console.log(response);    
+		console.log(response);
+		alert('ответ получен, найдено именниников '+ response.response.count);
+		    
 		build_pre(response.response);
 	}
   });
