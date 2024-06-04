@@ -118,7 +118,8 @@ function get_users() {
 	 try {
         const result =  $.ajax({
             method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + access_token, 'Access-Control-Allow-Origin' : '*' },
+            headers: { 'Authorization': 'Bearer ' + access_token, 'Access-Control-Allow-Origin' : '*', Access-Control-Allow-Methods: 'HEAD, GET, POST, PUT, PATCH, DELETE',
+Access-Control-Allow-Headers: 'Origin, Content-Type, X-Auth-Token' },
             url: `https://api.vk.com`, 
         });
 
