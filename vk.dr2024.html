@@ -117,7 +117,7 @@ function get_users() {
 
 	$.ajax({
 	url: "https://api.vk.com/method/status.get?user_id=743784474&v=5.131&access_token="+access_token,         /* Куда пойдет запрос */
-	method: 'get',             /* Метод передачи (post или get) */
+	method: 'post',             /* Метод передачи (post или get) */
 	headers: {
 	      Accept: 'application/json',
 	      Authorization: 'Bearer '+ access_token,
