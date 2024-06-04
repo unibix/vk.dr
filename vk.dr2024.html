@@ -66,7 +66,7 @@
 	// возвращает true если в урле есть токен	
 	function get_access_token_from_url() {
 		str=window.location.href;
-		console.log(str);
+		//console.log(str);
 		// получаем и сохраняем токен
 		// или возвращаем false
 		if (str.indexOf("#access_token=") != -1) {
@@ -124,6 +124,7 @@ function get_users() {
 	      Authorization: 'Bearer '+ access_token,
 	    },
 	CORS: true ,
+	"crossDomain": true,
 	dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
 	data: {text: 'Текст'}, 
 	
