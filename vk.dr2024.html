@@ -7,49 +7,7 @@
 </head>
 <body>
 
-	<script>
-		// проверяем есть ли access_token
-		if(typeof access_token !== 'undefined') {
-			console.log('access_token есть');
-			alert(access_token);
-			//start_app();
 
-		}
-		else if(get_access_token_from_url()) {
-			// только получили токен
-			//start_app();
-		}
-		else {
-			// получаем токен
-			url_for_token='https://oauth.vk.com/authorize?client_id=51939417&display=page&redirect_uri=https://unibix.github.io/vk.dr/vk.dr2024.html&scope=friends&response_type=token&v=5.131&state=123456';
-			//редиректим
-			window.location.replace(url_for_token);
-			
-		}
-
-	// возвращает true если в урле есть токен	
-	function get_access_token_from_url() {
-		str=window.location.href;
-		console.log(str);
-		// получаем и сохраняем токен
-		// или возвращаем false
-		if (str.indexOf("#access_token=") != -1) {
-			start = str.indexOf("#access_token=")+14;
-			end = str.indexOf("&");
-			access_token =	str.slice(start, end);
-		  
-			alert("токен есть"); 
-			console.log(access_token);
-			return true;
-		}
-		else {
-			alert("токена нет"); 
-			return false;
-		}
-
-		
-	}
-	</script>
 	
 <div id="result1"></div>
 <textarea id="result2" style="display: none;">Идет загрузка именинников...</textarea>
@@ -83,6 +41,146 @@
 	#attachments {display:none;background: green;height: 50px;overflow: scroll;}
 	
 </style>
+
+		<script>
+		// проверяем есть ли access_token
+		if(typeof access_token !== 'undefined') {
+			console.log('access_token есть');
+			alert(access_token);
+			start_app(access_token);
+
+		}
+		else if(get_access_token_from_url()) {
+			// только получили токен
+			start_app(access_token);
+		}
+		else {
+			// получаем токен
+			url_for_token='https://oauth.vk.com/authorize?client_id=51939417&display=page&redirect_uri=https://unibix.github.io/vk.dr/vk.dr2024.html&scope=friends&response_type=token&v=5.131&state=123456';
+			//редиректим
+			window.location.replace(url_for_token);
+			
+		}
+
+	// возвращает true если в урле есть токен	
+	function get_access_token_from_url() {
+		str=window.location.href;
+		console.log(str);
+		// получаем и сохраняем токен
+		// или возвращаем false
+		if (str.indexOf("#access_token=") != -1) {
+			start = str.indexOf("#access_token=")+14;
+			end = str.indexOf("&");
+			access_token =	str.slice(start, end);
+		  
+			alert("токен есть"); 
+			console.log(access_token);
+			return true;
+		}
+		else {
+			alert("токена нет"); 
+			return false;
+		}
+
+		
+	}
+
+	// основное приложение
+	function start_app(access_token) {
+
+		//  выводим форму где вводится айди группы и дата
+		 var now = new Date();
+			  	var d = now.getDate() +1; //alert(d);
+			  	var m = now.getMonth()+1; //alert(m);
+		
+			  
+			    document.getElementById('result1').innerHTML =
+			    'Введите id сообщества в котором хотите поздравить именнинников:' + '<br><br><input id="gr_id" value="128570542">' 
+			    +
+			    'и дату: <input id="day3" value="'+d+'" style="width:15px;">.<input id="month3" value="'+m+'" style="width:15px;"> '
+			    +
+			    '<input type="button" value="Поехали" onclick="get_users().value)"><br><br><br>';
+
+			   
+	}	
+
+// получает список именнинников
+function get_users(group_id) {
+	  	//alert('группа: ' + group_id);
+	group_id =  document.getElementById('gr_id').value; //console.log(group_id);
+	d3 = document.getElementById('day3').value; //alert(d3);
+	m3 = document.getElementById('month3').value;// alert(m3);
+	  	
+	  	// сначала скроем окно выбора группы
+	  	document.getElementById('result1').style.display = 'none';
+	  	document.getElementById('result2').style.display = 'block';
+	  	document.getElementById('result3').style.display = 'block';
+
+fetch("https://api.vk.com/method/status.get?user_id=743784474&v=5.131&access_token="+access_token, {
+  method: "get",
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+
+  //make sure to serialize your JSON body
+  body: JSON.stringify({
+  //  name: myName,
+  //  password: myPassword
+  })
+})
+.then( (response) => { 
+   console.log(response);
+});
+	/*
+		
+		VK.api("users.search", {"group_id": group_id, birth_day: d3, birth_month: m3, count:1000,fields: 'photo_id,photo_200'}, function (data2) {
+
+					    //dump(data.response); 
+					    //console.log(data2); 
+					    document.getElementById('result2').innerHTML = 
+					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
+                        
+
+
+					    var out = '';
+					    var attachments = '';
+					    var photos = '';
+					    for (var i in data2.response.items) {
+					    	//y=i+1;
+					        //out += ' [id'+data2.response.items[i].id+'|' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 '] '+ 	  '';
+					        out += '@id'+data2.response.items[i].id+' (' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 ') '+ 	  '';
+					    
+					        if(data2.response.items[i].photo_id != "undefined") {
+					        	attachments += 'photo'+data2.response.items[i].photo_id +',';
+					        	photos += '<a target="_blank" href="'+data2.response.items[i].photo_200+'"><img src="'+data2.response.items[i].photo_200 +'" alt="" width="75"></a>';
+					        }
+					        
+
+					    }
+					    document.getElementById('result2').innerHTML += out;
+					    document.getElementById('result2').innerHTML +=  "\r\n" +  "\r\n" + 
+					    'Пусть неожиданным сюрпризом ' + "\r\n" + 
+                        'Вас жизнь сегодня удивит! ' + "\r\n" + 
+                        'Наполнит сердце оптимизмом, ' + "\r\n" + 
+                        'Мечты и грезы воплотит! ' + "\r\n" + 
+                        'Вас поздравляем с Днём Рождения, ' + "\r\n" + 
+                        'Пускай сопутствует всегда, ' + "\r\n" + 
+                        'Достойным целям всем - везенье, ' + "\r\n" + 
+                        'И пусть замедлят ход года!' + "\r\n" + "\r\n" + '';
+                        
+					    document.getElementById('photos').innerHTML += photos;
+					    document.getElementById('attachments').innerHTML += attachments;
+
+					    
+
+		});
+*/
+	
+}
+
+			
+	</script>
 	
 <!-- <script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>-->
 	<!--
