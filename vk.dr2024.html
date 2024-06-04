@@ -116,9 +116,9 @@ function get_users() {
 	  	document.getElementById('result3').style.display = 'block';
 
 	 try {
-        const result = await $.ajax({
+        const result =  $.ajax({
             method: 'GET',
-            headers: { 'Authorization': 'OAuth ' + token },
+            headers: { 'Authorization': 'OAuth ' + access_token },
             url: `https://cloud-api.yandex.net/v1/disk/`, 
         });
 
