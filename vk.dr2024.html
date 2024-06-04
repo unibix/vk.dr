@@ -120,8 +120,10 @@ function get_users() {
 	method: 'post',             /* Метод передачи (post или get) */
 	headers: {
 	      Accept: 'application/json',
+	      'Access-Control-Allow-Origin': '*',
 	      Authorization: 'Bearer '+ access_token,
 	    },
+	CORS: true ,
 	dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
 	data: {text: 'Текст'}, 
 	
