@@ -34,8 +34,12 @@
 		// получаем и сохраняем токен
 		// или возвращаем false
 		if (str.indexOf("#access_token=") != -1) {
-		    access_token = '44';
+			start = str.indexOf("#access_token=")+14;
+			end = str.indexOf("&");
+			access_token =	str.slice(start, end);
+		  
 			alert("токен есть"); 
+			console.log(access_token);
 			return true;
 		}
 		else {
