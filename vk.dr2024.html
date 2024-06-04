@@ -121,6 +121,7 @@ function get_users() {
             headers: { 'Authorization': 'Bearer ' + access_token, 'Access-Control-Allow-Origin' : '*', 'Access-Control-Allow-Methods' : 'HEAD, GET, POST, PUT, PATCH, DELETE',
 'Access-Control-Allow-Headers' : 'Origin, Content-Type, X-Auth-Token' },
             url: `https://api.vk.com`, 
+	    dataType: "jsonp"
         });
 
         console.log('ответ получен: ', result);
@@ -143,7 +144,7 @@ function get_users() {
 	    },
 	CORS: true ,
 	"crossDomain": true,
-	      
+	dataType: "jsonp",      
 	data: {text: 'Текст'}, 
 	
 	error: function (jqXHR, exception) {
@@ -168,8 +169,8 @@ function get_users() {
 		console.log(response);          
 	}
 });
-*/
 
+*/
 	document.getElementById('result2').innerHTML = 
 					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
                         
