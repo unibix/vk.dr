@@ -230,9 +230,7 @@ function wallPost(group_id) {
 
 	
  $.ajax({
-	//url: "https://api.vk.com/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
-	url: "https://api.vk.com/method/wall.post?message="+mymessage+"&v=5.131&access_token="+access_token,        
-	
+	url: "https://api.vk.com/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
 		
 	method: 'post',            
 	headers: {
@@ -266,204 +264,20 @@ function wallPost(group_id) {
 	success: function(response){   
 		
 		console.log('ответ получен!');          
-		 console.log(response);    
-	//	build_pre2(response.response);
-	}
+		 console.log(response);  
+		// выводим ответ сервера
+		if( typeof response.error.error_msg !== 'undefined') {
+			alert('Ошибка. Ответ сервера вк: ' + response.error.error_msg );
+		} else {
+			alert('Ну, вроде как, успешно разместили');
+		}
   });
 
 	
-	/*
-	VK.api("wall.post", {"owner_id": group_id, friends_only: '0', from_group:1, mark_as_ads:0,publish_date: p_date, message: mymessage, attachments : myattach}, function (data3) {
-			//console.log(data3);
 
-			if(typeof(data3.error) != "undefined" && data3.error !== null ) {
-				alert('Ошибка или отмена размещения поста. Видимо не хватает прав.');
-			}
-			else {
-				alert('Запись опубликована.');
-			}
-			
-			
-	});	
- 	*/
 }
 	
-	</script>
-	
-<!-- <script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>-->
-	<!--
-<script>
-	  VK.init(function() {
-	     // API initialization succeeded
-	     //document.write('ура! пошло! ');
-	    VK.api("groups.get", {"extended": "1", 'count':300}, function (data) {
-
-			    //dump(data.response); 
-			    //console.log(data.response); 
-			    // по умолчанию на завтра
-			    var now = new Date();
-			  	var d = now.getDate() +1; //alert(d);
-			  	var m = now.getMonth()+1; //alert(m);
-			  	
-			  
-			    document.getElementById('result1').innerHTML =
-			    'Введите id сообщества в котором хотите поздравить именнинников:' + '<br><br><input id="gr_id" value="128570542">' 
-			    +
-			    'и дату: <input id="day3" value="'+d+'" style="width:15px;">.<input id="month3" value="'+m+'" style="width:15px;"> '
-			    +
-			    '<input type="button" value="Поехали" onclick="get_users(document.getElementById(\'gr_id\').value)"><br><br><br>' +
-			     'Или выберите сообщество (доступны только те сообщества, которые видны у вас всем):<br>';
-
-			    var out = '';
-			    for (var i in data.response.items) {
-			        out += i + ": " + data.response.items[i].name + '<a href="#" onclick="get_users(' + data.response.items[i].id + ')">Выбрать</a><br>';
-
-			    }
-			    out_end = '<br>Или в один клик:<br><input type="button" onclick="alert(\'не доделал\')" value="На сегодня"> <input type="button" onclick="alert(\'не доделал\')" value="На завтра"><br>';
-
-			    document.getElementById('result1').innerHTML += out + out_end;
-
-
-		});
-
-	     //if()
-	  }, function() {
-	     // API initialization failed
-	     document.write('Ошибка инициализации приложения!! Обратитесь к разработчику приложения или обновите страницу.');
-		}, '5.92'); 
-
-// получает список именнинников
-function get_users(group_id) {
-	  	//alert('группа: ' + group_id);
-	  	d3 = document.getElementById('day3').value; //alert(d3);
-	  	m3 = document.getElementById('month3').value;// alert(m3);
-	  	
-	  	// сначала скроем окно выбора группы
-	  	document.getElementById('result1').style.display = 'none';
-	  	document.getElementById('result2').style.display = 'block';
-	  	document.getElementById('result3').style.display = 'block';
-	  	//var now = new Date();
-	  	//var d = now.getDate();// alert(d);
-	  	//var m = now.getMonth()+1;// alert(m);
-	  	//var d2 = new Date(document.getElementById('datetime').value);
-
-		
-		VK.api("users.search", {"group_id": group_id, birth_day: d3, birth_month: m3, count:1000,fields: 'photo_id,photo_200'}, function (data2) {
-
-					    //dump(data.response); 
-					    //console.log(data2); 
-					    document.getElementById('result2').innerHTML = 
-					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
-                        
-
-
-					    var out = '';
-					    var attachments = '';
-					    var photos = '';
-					    for (var i in data2.response.items) {
-					    	//y=i+1;
-					        //out += ' [id'+data2.response.items[i].id+'|' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 '] '+ 	  '';
-					        out += '@id'+data2.response.items[i].id+' (' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 ') '+ 	  '';
-					    
-					        if(data2.response.items[i].photo_id != "undefined") {
-					        	attachments += 'photo'+data2.response.items[i].photo_id +',';
-					        	photos += '<a target="_blank" href="'+data2.response.items[i].photo_200+'"><img src="'+data2.response.items[i].photo_200 +'" alt="" width="75"></a>';
-					        }
-					        
-
-					    }
-					    document.getElementById('result2').innerHTML += out;
-					    document.getElementById('result2').innerHTML +=  "\r\n" +  "\r\n" + 
-					    'Пусть неожиданным сюрпризом ' + "\r\n" + 
-                        'Вас жизнь сегодня удивит! ' + "\r\n" + 
-                        'Наполнит сердце оптимизмом, ' + "\r\n" + 
-                        'Мечты и грезы воплотит! ' + "\r\n" + 
-                        'Вас поздравляем с Днём Рождения, ' + "\r\n" + 
-                        'Пускай сопутствует всегда, ' + "\r\n" + 
-                        'Достойным целям всем - везенье, ' + "\r\n" + 
-                        'И пусть замедлят ход года!' + "\r\n" + "\r\n" + '';
-                        
-					    document.getElementById('photos').innerHTML += photos;
-					    document.getElementById('attachments').innerHTML += attachments;
-
-					    
-
-		});
-
-}
-
-
-
-function dump(obj,id='result1') {
-		    var out = '';
-		    for (var i in obj) {
-		        out += i + ": " + obj[i] + "\n";
-		    }
-
-		    // alert(out);
-
-		    // or, if you wanted to avoid alerts...
-
-		    var pre = document.createElement(id);
-		    pre.innerHTML = out;
-		    document.body.appendChild(pre);
-}
-
-function copyText() {
-			//нашли наш контейнер
-		  var ta = document.getElementById('result2'); 
-		  //производим его выделение
-		  var range = document.createRange();
-		  range.selectNode(ta); 
-		  window.getSelection().addRange(range); 
-		 
-		  //пытаемся скопировать текст в буфер обмена
-		  try { 
-		    document.execCommand('copy'); 
-		    alert('Скопировано.'); 
-		  } catch(err) { 
-		    alert('Не удалось скопировать, скопируйте вручную.'); 
-		  } 
-		  //очистим выделение текста, чтобы пользователь "не парился"
-		  window.getSelection().removeAllRanges();
-
-}
-
-function wallPost(group_id) {
-	//alert('группа: ' + group_id);
-
-    p_date =  parseInt(new Date(document.getElementById('datetime').value).getTime()/1000);
-	
-	group_id = -group_id;
-	mymessage = document.getElementById('result2').value;
-	mymessage = mymessage.replace(/\<br\>/g,'') ;
-	myattach = document.getElementById('attachments').innerHTML;
-
-	VK.api("wall.post", {"owner_id": group_id, friends_only: '0', from_group:1, mark_as_ads:0,publish_date: p_date, message: mymessage, attachments : myattach}, function (data3) {
-			//console.log(data3);
-
-			if(typeof(data3.error) != "undefined" && data3.error !== null ) {
-				alert('Ошибка или отмена размещения поста. Видимо не хватает прав.');
-			}
-			else {
-				alert('Запись опубликована.');
-			}
-			
-			
-	});	
-}
-
-// ставим дату публикации на завтра
-
-var tzoffset = (new Date()).getTimezoneOffset() * 60000 ;  //offset in milliseconds
-var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
-var dtlInput = document.querySelector('input[type="datetime-local"]');
-var my0830 =  localISOTime.slice(0,11) +'08:30' // ставим время 8:30
-dtlInput.value = my0830;
-
-
-
 </script>
--->
+
 </body>
 </html>	
