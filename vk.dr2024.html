@@ -22,10 +22,10 @@
 	<script>
 		// ставим завтрашнее число
 		var now = new Date();
-		var d1 = now.getDate() +1;// alert(d1);
-		var m1 = now.getMonth()+1;// alert(m1);
-		var y1 = now.getFullYear();// alert(y1);
-		a = y1+'-'+m1 +'-'+d1+'T08:30'; // alert(a);
+		var d1 = now.getDate() +1; 
+		var m1 = now.getMonth()+1; 
+		var y1 = now.getFullYear();
+		a = y1+'-'+m1 +'-'+d1+'T08:30'; 
 		document.getElementById('datetime').value = a;
 	</script>
 	
@@ -72,9 +72,7 @@
 			start = str.indexOf("#access_token=")+14;
 			end = str.indexOf("&");
 			access_token =	str.slice(start, end);
-		  
-			alert("токен есть"); 
-			console.log(access_token);
+			console.log("токен есть");
 			return true;
 		}
 		else {
