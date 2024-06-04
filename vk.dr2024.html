@@ -116,7 +116,7 @@ function get_users() {
 	  	document.getElementById('result3').style.display = 'block';
 
 
-	$.ajax({
+ $.ajax({
 	url: "https://api.vk.com/method/users.search?group_id="+group_id+"&birth_day="+d3+"&birth_month="+m3+"&count=1000&fields=photo_id,photo_200&v=5.131&access_token="+access_token,        
 	
 		
@@ -155,11 +155,8 @@ function get_users() {
 		 console.log(response);    
 		build_pre(response.response);
 	}
-});
-
-		    
-
-	
+  });
+  	
 }
 
 function build_pre(response) {
@@ -219,7 +216,76 @@ function copyText() {
 		  window.getSelection().removeAllRanges();
 
 }
+
+//  размещает пост
+function wallPost(group_id) {
+	console.log('пробуем разместить пост в группе: ' + group_id);
+
+    p_date =  parseInt(new Date(document.getElementById('datetime').value).getTime()/1000);
+	
+	group_id = -group_id;
+	mymessage = document.getElementById('result2').value;
+	mymessage = mymessage.replace(/\<br\>/g,'') ;
+	myattach = document.getElementById('attachments').innerHTML;
+
+	
+ $.ajax({
+	url: "https://api.vk.com/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
+	
+		
+	method: 'post',            
+	headers: {
+	      Accept: 'application/json',
+	      'Access-Control-Allow-Origin': '*',
+	  //    Authorization: 'Bearer '+ access_token,
+	    },
+	// CORS: true ,
+	// "crossDomain": true,
+	dataType: "jsonp",      
+	data: {text: 'Текст'}, 
+	
+	error: function (jqXHR, exception) {
+		if (jqXHR.status === 0) {
+			console.log('Not connect. Verify Network.');
+		} else if (jqXHR.status == 404) {
+			console.log('Requested page not found (404).');
+		} else if (jqXHR.status == 500) {
+			console.log('Internal Server Error (500).');
+		} else if (exception === 'parsererror') {
+			console.log('Requested JSON parse failed.');
+		} else if (exception === 'timeout') {
+			console.log('Time out error.');
+		} else if (exception === 'abort') {
+			console.log('Ajax request aborted.');
+		} else {
+			console.log('Uncaught Error. ' + jqXHR.responseText);
+		}
+	},
+		
+	success: function(response){   
+		
+		console.log('ответ получен!');          
+		 console.log(response);    
+	//	build_pre2(response.response);
+	}
+  });
+
+	
+	/*
+	VK.api("wall.post", {"owner_id": group_id, friends_only: '0', from_group:1, mark_as_ads:0,publish_date: p_date, message: mymessage, attachments : myattach}, function (data3) {
+			//console.log(data3);
+
+			if(typeof(data3.error) != "undefined" && data3.error !== null ) {
+				alert('Ошибка или отмена размещения поста. Видимо не хватает прав.');
+			}
+			else {
+				alert('Запись опубликована.');
+			}
 			
+			
+	});	
+ 	*/
+}
 	
 	</script>
 	
