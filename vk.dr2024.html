@@ -115,6 +115,23 @@ function get_users() {
 	  	document.getElementById('result2').style.display = 'block';
 	  	document.getElementById('result3').style.display = 'block';
 
+	 try {
+        const result = await $.ajax({
+            method: 'GET',
+            headers: { 'Authorization': 'OAuth ' + token },
+            url: `https://cloud-api.yandex.net/v1/disk/`, 
+        });
+
+        console.log('Запрошены данные по яндекс диску: ', result);
+        const free_space = Math.floor((result.total_space - result.used_space) / 1024 / 1024);
+        if (free_space < 1024) {
+            send_alert_to_admin(free_space);
+        } 
+    } catch(err) {
+        console.error('Ошибка при запросе на свободное место на яндекс диске: ', err);
+    }  
+
+	/*
 	$.ajax({
 	url: "https://api.vk.com/method/status.get?user_id=743784474&v=5.131",         /* Куда пойдет запрос */
 	method: 'post',             /* Метод передачи (post или get) */
@@ -150,7 +167,7 @@ function get_users() {
 		console.log(response);          
 	}
 });
-
+*/
 
 	document.getElementById('result2').innerHTML = 
 					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
