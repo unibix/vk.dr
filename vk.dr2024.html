@@ -230,7 +230,8 @@ function wallPost(group_id) {
 
 	
  $.ajax({
-	url: "https://api.vk.com/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
+	//url: "https://api.vk.com/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
+	url: "https://api.vk.com/method/wall.post?message="+mymessage+"&v=5.131&access_token="+access_token,        
 	
 		
 	method: 'post',            
