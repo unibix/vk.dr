@@ -9,10 +9,16 @@
 </head>
 <body>
 
-	<iframe src="https://oauth.vk.com/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.com/blank.html&v=5.131">
-		
-	</iframe>
-	<br> <input type="button" onclick="console.log(ww);" value="Разместить"><br><br>
+<div id="start">
+	<br> Шаг1: <input type="button" 
+		     onclick="window.open('https://oauth.vk.com/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.com/blank.html&v=5.131','_blank');" 
+		     value="Получить токен"><br><br>
+	Шаг 2:<br>
+	<input type="text" placeholder="Сюда адрес полученный вставить"  value="" id="url" ><br>
+	
+	<input type="button"  onclick="check_token()"  value="Активировать токен" >
+
+</div>
 	
 <div id="result1"></div>
 <textarea id="result2" style="display: none;">Идет загрузка именинников...</textarea>
@@ -50,7 +56,7 @@
 
 		<script>
 		// проверяем есть ли access_token
-		if(typeof access_token !== 'undefined') {
+	/*	if(typeof access_token !== 'undefined') {
 			console.log('access_token есть');
 			
 			start_app(access_token);
@@ -64,14 +70,30 @@
 			// получаем токен
 			// url_for_token='https://oauth.vk.com/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://unibix.github.io/vk.dr/vk.dr2024.html&v=5.131';
 			url_for_token='https://oauth.vk.com/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.com/blank.html&v=5.131';
-			
-			
+
 			
 			//редиректим
 			// window.location.replace(url_for_token);
 			
 		}
-
+*/
+	function check_token() {
+		str=document.getElementById('url').value;
+		//console.log(str);
+		// получаем и сохраняем токен
+		// или возвращаем false
+		if (str.indexOf("#access_token=") != -1) {
+			start = str.indexOf("#access_token=")+14;
+			end = str.indexOf("&");
+			access_token =	str.slice(start, end);
+			console.log("токен есть");
+			start_app(access_token);
+		}
+		else {
+			alert("токена нет"); 
+			//return false;
+		}
+	}
 	// возвращает true если в урле есть токен	
 	function get_access_token_from_url() {
 		str=window.location.href;
