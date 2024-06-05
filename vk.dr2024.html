@@ -308,7 +308,7 @@ function wallPost(group_id) {
 		if( typeof response.error.error_msg !== 'undefined') {
 			alert('Ошибочка. Ответ сервера вконтакте: ' + response.error.error_msg );
 		} 
-		if( typeof response.post_id !== 'undefined') {
+		else if( typeof response.post_id !== 'undefined') {
 			alert('Ну, вроде как, успешно разместили');
 		} 
 		else {
