@@ -305,7 +305,7 @@ function wallPost(group_id) {
 		console.log('ответ получен!');          
 		 console.log(response);  
 		// выводим ответ сервера
-		if( typeof response.error.error_msg !== 'undefined') {
+		if( typeof response.error !== 'undefined') {
 			alert('Ошибочка. Ответ сервера вконтакте: ' + response.error.error_msg );
 		} 
 		else if( typeof response.post_id !== 'undefined') {
