@@ -306,9 +306,13 @@ function wallPost(group_id) {
 		 console.log(response);  
 		// выводим ответ сервера
 		if( typeof response.error.error_msg !== 'undefined') {
-			alert('Ошибка. Ответ сервера вк: ' + response.error.error_msg );
-		} else {
+			alert('Ошибочка. Ответ сервера вконтакте: ' + response.error.error_msg );
+		} 
+		if( typeof response.post_id !== 'undefined') {
 			alert('Ну, вроде как, успешно разместили');
+		} 
+		else {
+			alert('Ошибка 78445');
 		}
   	}
 
