@@ -215,7 +215,7 @@ function build_pre(response) {
 					        		attachments += 'photo' + response.items[i].photo_id + ',';
 									console.log('Добавили фото '+z);  
 					        		photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';
-									z++;
+									z = z+1;
 								}	
 					        }
 
@@ -331,4 +331,5 @@ function wallPost(group_id) {
 </body>
 
 </html>	
+
 
