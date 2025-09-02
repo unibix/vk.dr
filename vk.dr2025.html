@@ -214,11 +214,10 @@ function build_pre(response) {
 					        if(response.items[i].photo_id != "undefined") {
 								if(count_atts<10) { //ограничение на 10 вложений
 					        		attachments += 'photo' + response.items[i].photo_id + ',';
-									console.log('Добавили фото ' + count_atts);  
+									count_atts++; 
 					        		photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';	 
 								}	
-								count_atts++;
-									console.log('а теперь ' + count_atts); 
+								
 					        }
 
 					    }
@@ -333,6 +332,7 @@ function wallPost(group_id) {
 </body>
 
 </html>	
+
 
 
 
