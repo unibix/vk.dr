@@ -208,10 +208,14 @@ function build_pre(response) {
 					    for (let i in response.items) {
 					    	
 					        out += '@id' + response.items[i].id + ' (' + response.items[i].first_name + ' ' + response.items[i].last_name + ') ' + 	'';
-					    
+
+							let z = 0;
 					        if(response.items[i].photo_id != "undefined") {
-					        	attachments += 'photo' + response.items[i].photo_id + ',';
-					        	photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';
+								if(z<10) { //ограничение на 10 вложений
+					        		attachments += 'photo' + response.items[i].photo_id + ',';
+					        		photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';
+									z++;
+								}	
 					        }
 
 					    }
@@ -324,4 +328,5 @@ function wallPost(group_id) {
 <br> <input type="button" onclick="window.location.href='https://unibix.github.io/vk.dr/vk.dr2025.html'" value="Начать заново"><br><br>
 	
 </body>
+
 </html>	
