@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Поздравлялка 2025</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="jquery-3.7.1.min.js"></script>
+	<link rel="icon" href="favicon.ico">
+</head>
+<body>
+
+<div id="start">
+	<br> Шаг1: <input type="button" 
+		     onclick="window.open('https://oauth.vk.ru/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.ru/blank.html&v=5.131','_blank');" 
+		     value="Получить токен"><br><br>
+	Шаг 2:<br>
+	<input type="text" placeholder="Сюда адрес полученный вставить"  value="" id="url" ><br>
+	
+	<input type="button"  onclick="check_token()"  value="Активировать токен" >
+
+</div>
+	
+<div id="result1"></div>
+<textarea id="result2" style="display: none;"></textarea>
+<div id="photos"></div>
+<div id="attachments"></div>
+<div id="result3" style="display: none;">
+	<br>
+	<b>Вариант А:</b> <input type="button" onclick="copyText()" value="Скопировать в буфер"> и вручную разместить в группе <br><br>
+	<b>Вариант Б:</b> сразу разместить в группе (требуется подтверждение)
+	<br>введите id группы:<input id="gr_id2" value="128570542" width="50"> <br>и время публикации (будет отоженная запись)
+	 <input id="datetime" type="datetime-local" value="2021-12-28T08:30"><br> <input type="button" onclick="wallPost(document.getElementById('gr_id2').value)" value="Разместить"><br><br>
+	<script>
+		// ставим завтрашнее число
+		let now = new Date();
+		let d1 = now.getDate() +1; 
+		let m1 = now.getMonth()+1; 
+		let y1 = now.getFullYear();
+		let a = y1+'-'+m1 +'-'+d1+'T08:30'; 
+		document.getElementById('datetime').value = a;
+	</script>
+	
+</div>
+<div id="console" style="font-size:9px;">Лог:<br></div>	
+
+
+
+<style>
+	html, body {overflow: scroll; background: grey;font-size: 18px; line-height:25px;font-family: Arial;height:100vh;}
+	#result1 {background: white;overflow: scroll;min-height: 400px;}
+	#result2 {background: white;overflow: scroll;height: 200px;width: 100%;}
+	#photos {background: white;height: 200px;overflow: scroll;}
+	#attachments {display:none;background: green;height: 50px;overflow: scroll;}
+	
+</style>
+
+		<script>
+		// проверяем есть ли access_token
+	/*	if(typeof access_token !== 'undefined') {
+			console.log('access_token есть');
+			
+			start_app(access_token);
+
+		}
+		else if(get_access_token_from_url()) {
+			console.log('access_token только что получили');
+			start_app(access_token);
+		}
+		else {
+			// получаем токен
+			// url_for_token='https://oauth.vk.ru/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://unibix.github.io/vk.dr/vk.dr2024.html&v=5.131';
+			url_for_token='https://oauth.vk.ru/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.ru/blank.html&v=5.131';
+
+			
+			//редиректим
+			// window.location.replace(url_for_token);
+			
+		}
+*/
+	function check_token() {
+		str=document.getElementById('url').value;
+		//console.log(str);
+		// получаем и сохраняем токен
+		// или возвращаем false
+		if (str.indexOf("#access_token=") != -1) {
+			start = str.indexOf("#access_token=")+14;
+			end = str.indexOf("&");
+			access_token =	str.slice(start, end);
+			console.log("токен есть");
+			start_app(access_token);
+		}
+		else {
+			alert("токена нет"); 
+			//return false;
+		}
+	}
+	// возвращает true если в урле есть токен	
+	function get_access_token_from_url() {
+		str=window.location.href;
+		//console.log(str);
+		// получаем и сохраняем токен
+		// или возвращаем false
+		if (str.indexOf("#access_token=") != -1) {
+			start = str.indexOf("#access_token=")+14;
+			end = str.indexOf("&");
+			access_token =	str.slice(start, end);
+			console.log("токен есть");
+			return true;
+		}
+		else {
+			//alert("токена нет"); 
+			return false;
+		}
+
+		
+	}
+
+	// основное приложение
+	function start_app(access_token) {
+
+		//  выводим форму где вводится айди группы и дата
+		 let now = new Date();
+			  	let d = now.getDate() +1; 
+			  	let m = now.getMonth()+1; 
+		
+			  
+			    document.getElementById('result1').innerHTML =
+			    'Введите id сообщества в котором хотите поздравить именнинников:' + '<br><br><input id="gr_id" value="128570542">' 
+			    +
+			    'и дату: <input id="day3" value="'+d+'" style="width:15px;">.<input id="month3" value="'+m+'" style="width:15px;"> '
+			    +
+			    '<input type="button" value="Поехали" onclick="get_users()"><br><br><br>';
+
+			   
+	}	
+
+// получает список именнинников
+function get_users() {
+
+	group_id =  document.getElementById('gr_id').value; //console.log(group_id);
+	d3 = document.getElementById('day3').value; 
+	m3 = document.getElementById('month3').value;
+	  	
+	  	// сначала скроем окно выбора группы
+	  	document.getElementById('result1').style.display = 'none';
+	  	document.getElementById('result2').style.display = 'block';
+	  	document.getElementById('result3').style.display = 'block';
+
+
+ $.ajax({
+	url: "https://api.vk.ru/method/users.search?group_id="+group_id+"&birth_day="+d3+"&birth_month="+m3+"&count=1000&fields=photo_id,photo_200&v=5.131&access_token="+access_token,        
+	
+		
+	method: 'post',            
+	headers: {
+	      Accept: 'application/json',
+	      'Access-Control-Allow-Origin': '*',
+	  //    Authorization: 'Bearer '+ access_token,
+	    },
+	// CORS: true ,
+	// "crossDomain": true,
+	dataType: "jsonp",      
+	data: {text: 'Текст'}, 
+	
+	error: function (jqXHR, exception) {
+		if (jqXHR.status === 0) {
+			alert('Not connect. Verify Network.');
+		} else if (jqXHR.status == 404) {
+			alert('Requested page not found (404).');
+		} else if (jqXHR.status == 500) {
+			alert('Internal Server Error (500).');
+		} else if (exception === 'parsererror') {
+			alert('Requested JSON parse failed.');
+		} else if (exception === 'timeout') {
+			alert('Time out error.');
+		} else if (exception === 'abort') {
+			alert('Ajax request aborted.');
+		} else {
+			alert('Uncaught Error. ' + jqXHR.responseText);
+		}
+	},
+		
+	success: function(response){   
+		console.log('ответ получен!');          
+		console.log(response);
+		document.getElementById('console').innerHTML += 'ответ получен, найдено именниников ' + response.response.count +  "<br>" ;
+		    
+		build_pre(response.response);
+	}
+  });
+  	
+}
+
+function build_pre(response) {
+	document.getElementById('console').innerHTML += 'начинаем выводить именниников'  +  "<br>" ;
+	
+	//console.log(response);    
+	console.log(response.items);    
+	
+                        
+
+
+					    let out = 'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
+					    let attachments = '';
+					    let photos = '';
+	document.getElementById('console').innerHTML += 'продолжаем ' +  "<br>" ;
+	
+					    for (let i in response.items) {
+					    	
+					        out += '@id' + response.items[i].id + ' (' + response.items[i].first_name + ' ' + response.items[i].last_name + ') ' + 	'';
+					    
+					        if(response.items[i].photo_id != "undefined") {
+					        	attachments += 'photo' + response.items[i].photo_id + ',';
+					        	photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';
+					        }
+
+					    }
+	document.getElementById('console').innerHTML += 'продолжаем 2' +  "<br>" ;
+	
+					    document.getElementById('result2').innerHTML += out;
+	document.getElementById('console').innerHTML += 'продолжаем 3' +  "<br>" ;
+	
+					    document.getElementById('result2').innerHTML +=  "\r\n" +  "\r\n" + 
+					    'Пусть неожиданным сюрпризом ' + "\r\n" + 
+                        'Вас жизнь сегодня удивит! ' + "\r\n" + 
+                        'Наполнит сердце оптимизмом, ' + "\r\n" + 
+                        'Мечты и грезы воплотит! ' + "\r\n" + 
+                        'Вас поздравляем с Днём Рождения, ' + "\r\n" + 
+                        'Пускай сопутствует всегда, ' + "\r\n" + 
+                        'Достойным целям всем - везенье, ' + "\r\n" + 
+                        'И пусть замедлят ход года!' + "\r\n" + "\r\n" + '';
+                        
+					    document.getElementById('photos').innerHTML += photos;
+					    document.getElementById('attachments').innerHTML += attachments;
+	document.getElementById('console').innerHTML += 'закончили ' +  "<br>" ;
+	
+}
+
+function copyText() {
+			//нашли наш контейнер
+		  let ta = document.getElementById('result2'); 
+		  //производим его выделение
+		  let range = document.createRange();
+		  range.selectNode(ta); 
+		  window.getSelection().addRange(range); 
+		 
+		  //пытаемся скопировать текст в буфер обмена
+		  try { 
+		    document.execCommand('copy'); 
+		    alert('Скопировано.'); 
+		  } catch(err) { 
+		    alert('Не удалось скопировать, скопируйте вручную.'); 
+		  } 
+		  //очистим выделение текста, чтобы пользователь "не парился"
+		  window.getSelection().removeAllRanges();
+
+}
+
+//  размещает пост
+function wallPost(group_id) {
+	console.log('пробуем разместить пост в группе: ' + group_id);
+
+    p_date =  parseInt(new Date(document.getElementById('datetime').value).getTime()/1000);
+	
+	group_id = -group_id;
+	mymessage = document.getElementById('result2').value;
+	mymessage = mymessage.replace(/\<br\>/g,'') ;
+	myattach = document.getElementById('attachments').innerHTML;
+
+	
+ $.ajax({
+	url: "https://api.vk.ru/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
+		
+	method: 'post',            
+	headers: {
+	      Accept: 'application/json',
+	      'Access-Control-Allow-Origin': '*',
+	  //    Authorization: 'Bearer '+ access_token,
+	    },
+	// CORS: true ,
+	// "crossDomain": true,
+	dataType: "jsonp",      
+	data: {text: 'Текст'}, 
+	
+	error: function (jqXHR, exception) {
+		if (jqXHR.status === 0) {
+			console.log('Not connect. Verify Network.');
+		} else if (jqXHR.status == 404) {
+			console.log('Requested page not found (404).');
+		} else if (jqXHR.status == 500) {
+			console.log('Internal Server Error (500).');
+		} else if (exception === 'parsererror') {
+			console.log('Requested JSON parse failed.');
+		} else if (exception === 'timeout') {
+			console.log('Time out error.');
+		} else if (exception === 'abort') {
+			console.log('Ajax request aborted.');
+		} else {
+			console.log('Uncaught Error. ' + jqXHR.responseText);
+		}
+	},
+		
+	success: function(response){   
+		
+		console.log('ответ получен!');          
+		 console.log(response);  
+		// выводим ответ сервера
+		if( typeof response.error !== 'undefined') {
+			alert('Ошибочка. Ответ сервера вконтакте: ' + response.error.error_msg );
+		} 
+		else  {
+			alert('Ну, вроде как, успешно разместили');
+		} 
+	
+  	}
+
+	
+
+ });
+}
+			
+</script>
+
+<br> <input type="button" onclick="window.location.href='https://unibix.github.io/vk.dr/vk.dr2025.html'" value="Начать заново"><br><br>
+	
+</body>
+</html>	
