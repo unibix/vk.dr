@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Поздравлялка 2024</title>
+	<title>Поздравлялка 3.0</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="jquery-3.7.1.min.js"></script>
 	<link rel="icon" href="favicon.ico">
@@ -11,7 +11,7 @@
 
 <div id="start">
 	<br> Шаг1: <input type="button" 
-		     onclick="window.open('https://oauth.vk.com/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.com/blank.html&v=5.131','_blank');" 
+		     onclick="window.open('https://oauth.vk.ru/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.ru/blank.html&v=5.131','_blank');" 
 		     value="Получить токен"><br><br>
 	Шаг 2:<br>
 	<input type="text" placeholder="Сюда адрес полученный вставить"  value="" id="url" ><br>
@@ -46,10 +46,10 @@
 
 
 <style>
-	html, body {overflow: scroll; background: grey;font-size: 18px; line-height:25px;font-family: Arial;height:100vh;}
+	html, body {overflow: scroll; background: grey;background: linear-gradient(45deg, #6f6f6f, #c7c7c7);font-size: 18px; line-height:25px;font-family: Arial;height:100vh;}
 	#result1 {background: white;overflow: scroll;min-height: 400px;}
 	#result2 {background: white;overflow: scroll;height: 200px;width: 100%;}
-	#photos {background: white;height: 200px;overflow: scroll;}
+	#photos {background: white;height: 80px;overflow: scroll;}
 	#attachments {display:none;background: green;height: 50px;overflow: scroll;}
 	
 </style>
@@ -68,8 +68,8 @@
 		}
 		else {
 			// получаем токен
-			// url_for_token='https://oauth.vk.com/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://unibix.github.io/vk.dr/vk.dr2024.html&v=5.131';
-			url_for_token='https://oauth.vk.com/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.com/blank.html&v=5.131';
+			// url_for_token='https://oauth.vk.ru/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://unibix.github.io/vk.dr/vk.dr2024.html&v=5.131';
+			url_for_token='https://oauth.vk.ru/authorize?client_id=51939417&display=page&scope=wall&response_type=token&redirect_uri=https://oauth.vk.ru/blank.html&v=5.131';
 
 			
 			//редиректим
@@ -148,7 +148,7 @@ function get_users() {
 
 
  $.ajax({
-	url: "https://api.vk.com/method/users.search?group_id="+group_id+"&birth_day="+d3+"&birth_month="+m3+"&count=1000&fields=photo_id,photo_200&v=5.131&access_token="+access_token,        
+	url: "https://api.vk.ru/method/users.search?group_id="+group_id+"&birth_day="+d3+"&birth_month="+m3+"&count=1000&fields=photo_id,photo_200&v=5.131&access_token="+access_token,        
 	
 		
 	method: 'post',            
@@ -203,15 +203,21 @@ function build_pre(response) {
 					    let out = 'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
 					    let attachments = '';
 					    let photos = '';
-	document.getElementById('console').innerHTML += 'продолжаем ' +  "<br>" ;
+						document.getElementById('console').innerHTML += 'продолжаем ' +  "<br>" ;
+						let count_atts = 0;
 	
 					    for (let i in response.items) {
 					    	
 					        out += '@id' + response.items[i].id + ' (' + response.items[i].first_name + ' ' + response.items[i].last_name + ') ' + 	'';
-					    
+
+							
 					        if(response.items[i].photo_id != "undefined") {
-					        	attachments += 'photo' + response.items[i].photo_id + ',';
-					        	photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';
+								if(count_atts<10) { //ограничение на 10 вложений
+					        		attachments += 'photo' + response.items[i].photo_id + ',';
+									count_atts++; 
+					        		photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';	 
+								}	
+								
 					        }
 
 					    }
@@ -269,7 +275,7 @@ function wallPost(group_id) {
 
 	
  $.ajax({
-	url: "https://api.vk.com/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
+	url: "https://api.vk.ru/method/wall.post?owner_id="+group_id+"&message="+mymessage+"&friends_only=0&publish_date="+p_date+"&mark_as_ads=0&attachments="+myattach+"&v=5.131&access_token="+access_token,        
 		
 	method: 'post',            
 	headers: {
@@ -324,4 +330,6 @@ function wallPost(group_id) {
 <br> <input type="button" onclick="window.location.href='https://unibix.github.io/vk.dr/vk.dr2024.html'" value="Начать заново"><br><br>
 	
 </body>
+
 </html>	
+
