@@ -213,6 +213,7 @@ function build_pre(response) {
 					        if(response.items[i].photo_id != "undefined") {
 								if(z<10) { //ограничение на 10 вложений
 					        		attachments += 'photo' + response.items[i].photo_id + ',';
+									console.log('Добавили фото '+z);  
 					        		photos += '<a target="_blank" href="' + response.items[i].photo_200 + '"><img src="' + response.items[i].photo_200 + '" alt="" width="75"></a>';
 									z++;
 								}	
@@ -330,3 +331,4 @@ function wallPost(group_id) {
 </body>
 
 </html>	
+
