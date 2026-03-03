@@ -11,16 +11,17 @@
 
 <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 
-	<script>
+<script>
   vkBridge.send("VKWebAppInit", {});
-vkBridge.subscribe((e) => console.log(e)); 
+  vkBridge.subscribe((e) => console.log(e)); 
 
-		vkBridge.send('VKWebAppGetAuthToken', { 
+  vkBridge.send('VKWebAppGetAuthToken', { 
   app_id: 54470168, 
   scope: 'wall'
   })
   .then( (data) => { 
     if (data.access_token) {
+		megatoken=data.access_token;
       console.log('токен' + data.access_token);
     }
   })
@@ -28,10 +29,28 @@ vkBridge.subscribe((e) => console.log(e));
     // Ошибка
     console.log(error);
   });
+
+	vkBridge.send('VKWebAppCallAPIMethod', {
+  method: 'users.get',
+  params: {
+    user_ids: '743784474,743784479',
+    v: '5.131',
+    access_token: megatoken
+  }})
+  .then((data) => { 
+    if (data.response) {
+      console.log('ответ получен ' + data.response);
+    }
+  })
+  .catch((error) => {
+    // Ошибка
+    console.log(error);
+  });
+	
 		
 </script>
 	
-<script>	
+<!--<script>	
 // Подписывается на события, отправленные нативным клиентом
 bridge.subscribe((e) => console.log(e)); 
 
@@ -61,7 +80,8 @@ bridge.send('VKWebAppGetAuthToken', {
     console.log(error);
   });	
 	
-</script>	
+</script>-->
+	
 <div id="result1"></div>
 <textarea id="result2" style="display: none;">Идет загрузка именинников...</textarea>
 <div id="photos"></div>
@@ -94,7 +114,7 @@ bridge.send('VKWebAppGetAuthToken', {
 	#attachments {display:none;background: green;height: 50px;overflow: scroll;}
 	
 </style>
-<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+
 <script>
 	  VK.init(function() {
 	     // API initialization succeeded
