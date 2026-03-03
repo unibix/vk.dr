@@ -21,8 +21,8 @@
   })
   .then( (data) => { 
     if (data.access_token) {
-		megatoken=data.access_token;
-      console.log('токен' + data.access_token);
+		let megatoken = data.access_token;
+      console.log('токен такой получили ' + data.access_token);
     }
   })
   .catch( (error) => {
