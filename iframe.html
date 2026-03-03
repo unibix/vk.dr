@@ -4,14 +4,17 @@
 	<meta charset="UTF-8"/>
 	<title>Поздравлялка 5.0</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+  
   
 </head>
 <body>
+
+<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 <script>	
 // Подписывается на события, отправленные нативным клиентом
 bridge.subscribe((e) => console.log(e)); 
-    
+
+	
 // Отправляет событие нативному клиенту
 bridge.send("VKWebAppInit", {});      
     
