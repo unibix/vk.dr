@@ -11,6 +11,84 @@
 
 <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 
+<div id="result"></div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    
+    // Запрашиваем права на получение списка друзей
+    vkBridge.send("VKWebAppInit");
+
+	vkBridge.send("VKWebAppCallAPIMethod", {method: 'users.search', params: {"group_id": 128570542, birth_day: 5, birth_month: 3, count:1000,fields: 'photo_id,photo_200'} })
+            .then(response => console.log(response))
+            .catch(error => console.error('Ошибка:', error));
+	
+	
+	
+// получает список именнинников
+function get_users(group_id) {
+	  	//alert('группа: ' + group_id);
+	  	d3 = document.getElementById('day3').value; //alert(d3);
+	  	m3 = document.getElementById('month3').value;// alert(m3);
+	  	
+	  	// сначала скроем окно выбора группы
+	  	document.getElementById('result1').style.display = 'none';
+	  	document.getElementById('result2').style.display = 'block';
+	  	document.getElementById('result3').style.display = 'block';
+	  	//var now = new Date();
+	  	//var d = now.getDate();// alert(d);
+	  	//var m = now.getMonth()+1;// alert(m);
+	  	//var d2 = new Date(document.getElementById('datetime').value);
+
+		
+	
+		VK.api("users.search", {"group_id": group_id, birth_day: d3, birth_month: m3, count:1000,fields: 'photo_id,photo_200'}, function (data2) {
+
+					    //dump(data.response); 
+					    //console.log(data2); 
+					    document.getElementById('result2').innerHTML = 
+					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
+                        
+
+
+					    var out = '';
+					    var attachments = '';
+					    var photos = '';
+					    for (var i in data2.response.items) {
+					    	//y=i+1;
+					        //out += ' [id'+data2.response.items[i].id+'|' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 '] '+ 	  '';
+					        out += '@id'+data2.response.items[i].id+' (' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 ') '+ 	  '';
+					    
+					        if(data2.response.items[i].photo_id != "undefined") {
+					        	attachments += 'photo'+data2.response.items[i].photo_id +',';
+					        	photos += '<a target="_blank" href="'+data2.response.items[i].photo_200+'"><img src="'+data2.response.items[i].photo_200 +'" alt="" width="75"></a>';
+					        }
+					        
+
+					    }
+					    document.getElementById('result2').innerHTML += out;
+					    document.getElementById('result2').innerHTML +=  "\r\n" +  "\r\n" + 
+					    'Пусть неожиданным сюрпризом ' + "\r\n" + 
+                        'Вас жизнь сегодня удивит! ' + "\r\n" + 
+                        'Наполнит сердце оптимизмом, ' + "\r\n" + 
+                        'Мечты и грезы воплотит! ' + "\r\n" + 
+                        'Вас поздравляем с Днём Рождения, ' + "\r\n" + 
+                        'Пускай сопутствует всегда, ' + "\r\n" + 
+                        'Достойным целям всем - везенье, ' + "\r\n" + 
+                        'И пусть замедлят ход года!' + "\r\n" + "\r\n" + '';
+                        
+					    document.getElementById('photos').innerHTML += photos;
+					    document.getElementById('attachments').innerHTML += attachments;
+
+					    
+
+		});
+
+}
+	
+	
+</script>
+	<!--
 <script>
   vkBridge.send("VKWebAppInit", {});
   vkBridge.subscribe((e) => console.log(e)); 
@@ -104,7 +182,7 @@ bridge.send('VKWebAppGetAuthToken', {
 	
 </div>
 
-
+-->
 
 <style>
 	html, body {overflow: scroll; background: grey;font-size: 18px; line-height:25px;font-family: Arial;height:100vh;}
@@ -115,6 +193,7 @@ bridge.send('VKWebAppGetAuthToken', {
 	
 </style>
 
+	<!--
 <script>
 	  VK.init(function() {
 	     // API initialization succeeded
@@ -286,7 +365,7 @@ dtlInput.value = my0830;
 
 
 
-</script>
+</script>-->
 
 </body>
 </html>	
