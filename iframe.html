@@ -11,165 +11,20 @@
 
 <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 
-<div id="result"></div>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-
-    
-    // Запрашиваем права на получение списка друзей
-    vkBridge.send("VKWebAppInit");
-
-	vkBridge.send("VKWebAppCallAPIMethod", {method: 'users.search', params: {"group_id": 128570542, birth_day: 5, birth_month: 3, count:1000,fields: 'photo_id,photo_200'} })
-            .then(response => console.log(response))
-            .catch(error => console.error('Ошибка:', error));
-	
-	
-	
-// получает список именнинников
-function get_users(group_id) {
-	  	//alert('группа: ' + group_id);
-	  	d3 = document.getElementById('day3').value; //alert(d3);
-	  	m3 = document.getElementById('month3').value;// alert(m3);
-	  	
-	  	// сначала скроем окно выбора группы
-	  	document.getElementById('result1').style.display = 'none';
-	  	document.getElementById('result2').style.display = 'block';
-	  	document.getElementById('result3').style.display = 'block';
-	  	//var now = new Date();
-	  	//var d = now.getDate();// alert(d);
-	  	//var m = now.getMonth()+1;// alert(m);
-	  	//var d2 = new Date(document.getElementById('datetime').value);
-
-		
-	
-		VK.api("users.search", {"group_id": group_id, birth_day: d3, birth_month: m3, count:1000,fields: 'photo_id,photo_200'}, function (data2) {
-
-					    //dump(data.response); 
-					    //console.log(data2); 
-					    document.getElementById('result2').innerHTML = 
-					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
-                        
+<div id="first">	
+    <textarea id="out" >Идет загрузка именинников...</textarea>
+    <div id="photos"></div>
+    <div id="attachments"></div>
 
 
-					    var out = '';
-					    var attachments = '';
-					    var photos = '';
-					    for (var i in data2.response.items) {
-					    	//y=i+1;
-					        //out += ' [id'+data2.response.items[i].id+'|' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 '] '+ 	  '';
-					        out += '@id'+data2.response.items[i].id+' (' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 ') '+ 	  '';
-					    
-					        if(data2.response.items[i].photo_id != "undefined") {
-					        	attachments += 'photo'+data2.response.items[i].photo_id +',';
-					        	photos += '<a target="_blank" href="'+data2.response.items[i].photo_200+'"><img src="'+data2.response.items[i].photo_200 +'" alt="" width="75"></a>';
-					        }
-					        
-
-					    }
-					    document.getElementById('result2').innerHTML += out;
-					    document.getElementById('result2').innerHTML +=  "\r\n" +  "\r\n" + 
-					    'Пусть неожиданным сюрпризом ' + "\r\n" + 
-                        'Вас жизнь сегодня удивит! ' + "\r\n" + 
-                        'Наполнит сердце оптимизмом, ' + "\r\n" + 
-                        'Мечты и грезы воплотит! ' + "\r\n" + 
-                        'Вас поздравляем с Днём Рождения, ' + "\r\n" + 
-                        'Пускай сопутствует всегда, ' + "\r\n" + 
-                        'Достойным целям всем - везенье, ' + "\r\n" + 
-                        'И пусть замедлят ход года!' + "\r\n" + "\r\n" + '';
-                        
-					    document.getElementById('photos').innerHTML += photos;
-					    document.getElementById('attachments').innerHTML += attachments;
-
-					    
-
-		});
-
-}
-	
-	
-</script>
-	<!--
-<script>
-  vkBridge.send("VKWebAppInit", {});
-  vkBridge.subscribe((e) => console.log(e)); 
-
-  vkBridge.send('VKWebAppGetAuthToken', { 
-  app_id: 54470168, 
-  scope: 'wall'
-  })
-  .then( (data) => { 
-    if (data.access_token) {
-		let megatoken = data.access_token;
-      console.log('токен такой получили ' + data.access_token);
-    }
-  })
-  .catch( (error) => {
-    // Ошибка
-    console.log(error);
-  });
-
-	vkBridge.send('VKWebAppCallAPIMethod', {
-  method: 'users.get',
-  params: {
-    user_ids: '743784474,743784479',
-    v: '5.131',
-    access_token: megatoken
-  }})
-  .then((data) => { 
-    if (data.response) {
-      console.log('ответ получен ' + data.response);
-    }
-  })
-  .catch((error) => {
-    // Ошибка
-    console.log(error);
-  });
-	
-		
-</script>
-	
-<!--<script>	
-// Подписывается на события, отправленные нативным клиентом
-bridge.subscribe((e) => console.log(e)); 
-
-	
-// Отправляет событие нативному клиенту
-bridge.send("VKWebAppInit", {});      
-    
-// Проверяет, поддерживается ли событие на текущей платформе, и
-// вызывает это событие 
-bridge.supportsAsync("VKWebAppResizeWindow").then( res => {
-    if (res) {
-        bridge.send("VKWebAppResizeWindow", {"width": 800, "height": 1000});
-    }
-});
-
-bridge.send('VKWebAppGetAuthToken', { 
-  app_id: 54470168, 
-  scope: 'wall'
-  })
-  .then( (data) => { 
-    if (data.access_token) {
-      console.log('токен' + data.access_token);
-    }
-  })
-  .catch( (error) => {
-    // Ошибка
-    console.log(error);
-  });	
-	
-</script>-->
-	
-<div id="result1"></div>
-<textarea id="result2" style="display: none;">Идет загрузка именинников...</textarea>
-<div id="photos"></div>
-<div id="attachments"></div>
-<div id="result3" style="display: none;">
+<div id="buttons_wallpost" style="display: none;">
 	<br>
-	<b>Вариант А:</b> <input type="button" onclick="copyText()" value="Скопировать в буфер"> и вручную разместить в группе <br><br>
-	<b>Вариант Б:</b> сразу разместить в группе (требуется подтверждение)
-	<br>введите id группы:<input id="gr_id2" value="128570542" width="50"> <br>и время публикации (будет отоженная запись)
-	 <input id="datetime" type="datetime-local" value="2021-12-28T08:30"><br> <input type="button" onclick="wallPost(document.getElementById('gr_id2').value)" value="Разместить"><br><br>
+	<b>Осталось разместить в группе:</b>
+	<br>введите  время публикации (будет отоженная запись)
+	 <input type="hidden" id="gr_id2" value="128570542" width="50">
+	 <input id="datetime" type="datetime-local" value="2021-12-28T08:30"><br> 
+	 <input id="main1" class="btn" type="button" value="Разместить"><br><br>
+	 
 	<script>
 		// ставим завтрашнее число
 		var now = new Date();
@@ -181,19 +36,189 @@ bridge.send('VKWebAppGetAuthToken', {
 	</script>
 	
 </div>
+<div id="buttons_other_dates">
+    Другая дата:<br>
+    
+    день <input id="d" value="6" style="width:20px">
+    месяц <input id="m" value="3" style="width:20px">
+    <button class="btn" id="anyday"  width="40">Показать именинников</button>
+    
+</div>
 
--->
+</div>
+
+
+
+
+
+<script>
+    
+var token = null;
+    
+document.addEventListener('DOMContentLoaded', () => {
+
+    vkBridge.send("VKWebAppInit");
+
+    function get_token(d,m) {
+        
+        if(d == undefined) {
+			    var now = new Date();
+			   d = now.getDate() +1; //alert(d);
+			   m = now.getMonth()+1; //alert(m);
+        }
+        // Запрашиваем права на размещение на стене
+        vkBridge.send('VKWebAppGetAuthToken', { 
+          app_id: 54470168,
+          scope: 'wall,groups'
+      })
+      .then( (data) => { 
+        if (data.access_token) {
+          //console.log('токен такой получили ' + data.access_token);
+          token = data.access_token;
+          get_users(data.access_token,d,m); //как получили токен можно выводить именинников
+    	
+        } else { console.log('токена нет'); }
+      })
+      .catch( (error) => {
+        // Ошибка
+        console.log(error);
+      });
+    }  
+    
+    get_token();
+    
+    /*
+    function check_token() {
+      if(token == null) console.log(111);
+      else {
+          clearInterval(timerId); 
+          console.log(token);
+      }
+    }
+    
+    let timerId = setInterval(check_token, 200);
+    */
+
+    
+    //размещает пост на стене
+    function wallPost() {
+    	//alert('токен: ' + token);
+    
+        p_date =  parseInt(new Date(document.getElementById('datetime').value).getTime()/1000);
+    	
+    	group_id = -128570542;
+    	mymessage = document.getElementById('out').value;
+    	mymessage = mymessage.replace(/\<br\>/g,'') ;
+    	myattach = document.getElementById('attachments').innerHTML;
+    
+        vkBridge.send("VKWebAppCallAPIMethod", {method: 'wall.post', params: {'access_token': token, v: '5.199', 'group_id': 128570542, "owner_id": group_id, friends_only: '0', from_group:1, 
+            mark_as_ads:0,publish_date: p_date, message: mymessage, attachments : myattach} })
+                .then(response => wall_post(response))
+                .catch(error => wall_error(error) );
+                
+    	
+    }
+    	
+    
+    document.getElementById('main1').onclick = wallPost;
+    
+    const button = document.querySelector('#anyday');
+
+    button.addEventListener('click', () => {
+        document.getElementById('out').innerHTML = '';
+        document.getElementById('photos').innerHTML = '';
+        document.getElementById('attachments').innerHTML = '';
+        
+        
+        get_token(document.getElementById('d').value,document.getElementById('m').value) ;
+        
+    });
+    
+
+});
+
+function wall_post(response) {
+    console.log('Пост успешно размещен');
+    console.log(response);
+}
+function wall_error(error) {
+    alert('Пост НЕ размещен. Текст ошибки: ' + error.error_data.error_msg );
+    
+    console.error('Ошибка 44443:', error)
+}
+
+
+function get_users(token,d,m) {
+    vkBridge.send("VKWebAppCallAPIMethod", {method: 'users.search', params: {'access_token': token, v: '5.199', 'group_id': 128570542, birth_day: d, birth_month: m, count:1000,fields: 'photo_id,photo_200'} })
+            .then(response => show_users(response))
+            .catch(error => console.error('Ошибка 99977:', error));
+}
+
+function show_users(data) {
+
+    //console.log('на входе имеем:' ); 
+    //console.log(data.response.items); 
+    
+    document.getElementById('out').innerHTML = 
+    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!!  ' + "\r\n" + '' ;
+
+
+    var out = ''; //текст поста
+    var attachments = ''; //вложения к посту 
+    var photos = ''; // фото выводим, визуально, чтобы понять что там нет ничего стремного
+    
+    for (var i in data.response.items) {
+    	//console.log(data.response.items[i]); 
+        //out += ' [id'+data2.response.items[i].id+'|' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 '] '+ 	  '';
+        out += '@id'+data.response.items[i].id+' (' + data.response.items[i].first_name + ' '+data.response.items[i].last_name+ 	 ') '+ 	  '';
+    
+        if(data.response.items[i].photo_id != "undefined") {
+        	attachments += 'photo'+data.response.items[i].photo_id +',';
+        	photos += '<a target="_blank" href="'+data.response.items[i].photo_200+'"><img src="'+data.response.items[i].photo_200 +'" alt="" width="75"></a>';
+        }
+    }
+    
+    document.getElementById('out').innerHTML += out;
+    document.getElementById('out').innerHTML +=  "\r\n" +  "\r\n" + 
+    'Пусть неожиданным сюрпризом ' + "\r\n" + 
+    'Вас жизнь сегодня удивит! ' + "\r\n" + 
+    'Наполнит сердце оптимизмом, ' + "\r\n" + 
+    'Мечты и грезы воплотит! ' + "\r\n" + 
+    'Вас поздравляем с Днём Рождения, ' + "\r\n" + 
+    'Пускай сопутствует всегда, ' + "\r\n" + 
+    'Достойным целям всем - везенье, ' + "\r\n" + 
+    'И пусть замедлят ход года!' + "\r\n" + "\r\n" + '';
+    
+    document.getElementById('photos').innerHTML += photos;
+    document.getElementById('attachments').innerHTML += attachments;
+     
+    document.getElementById('buttons_wallpost').style.display='block';    
+}
+
+// ставим дату публикации на завтра
+
+var tzoffset = (new Date()).getTimezoneOffset() * 60000 ;  //offset in milliseconds
+var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
+var dtlInput = document.querySelector('input[type="datetime-local"]');
+var my0830 =  localISOTime.slice(0,11) +'08:30' // ставим время 8:30
+dtlInput.value = my0830;
+	
+</script>
+
+
 
 <style>
-	html, body {overflow: scroll; background: grey;font-size: 18px; line-height:25px;font-family: Arial;height:100vh;}
+	html, body { background: grey;font-size: 18px; line-height:25px;font-family: Arial;height:90vh;margin:0;padding:0;}
+	#first {display: flex;flex-direction: column;max-width:100%;}
 	#result1 {background: white;overflow: scroll;min-height: 400px;}
-	#result2 {background: white;overflow: scroll;height: 200px;width: 100%;}
+	#out {background: white;overflow: scroll;height: 200px;width: 100%;}
 	#photos {background: white;height: 200px;overflow: scroll;}
 	#attachments {display:none;background: green;height: 50px;overflow: scroll;}
+	.btn {font-size:18px;background-color: #06A3DA;border-color: #06A3DA;border-radius: 5px;}
 	
 </style>
 
-	<!--
+<!--	
 <script>
 	  VK.init(function() {
 	     // API initialization succeeded
@@ -234,134 +259,10 @@ bridge.send('VKWebAppGetAuthToken', {
 	     document.write('Ошибка инициализации приложения!! Обратитесь к разработчику приложения или обновите страницу.');
 		}, '5.92'); 
 
-// получает список именнинников
-function get_users(group_id) {
-	  	//alert('группа: ' + group_id);
-	  	d3 = document.getElementById('day3').value; //alert(d3);
-	  	m3 = document.getElementById('month3').value;// alert(m3);
-	  	
-	  	// сначала скроем окно выбора группы
-	  	document.getElementById('result1').style.display = 'none';
-	  	document.getElementById('result2').style.display = 'block';
-	  	document.getElementById('result3').style.display = 'block';
-	  	//var now = new Date();
-	  	//var d = now.getDate();// alert(d);
-	  	//var m = now.getMonth()+1;// alert(m);
-	  	//var d2 = new Date(document.getElementById('datetime').value);
-
-		
-		VK.api("users.search", {"group_id": group_id, birth_day: d3, birth_month: m3, count:1000,fields: 'photo_id,photo_200'}, function (data2) {
-
-					    //dump(data.response); 
-					    //console.log(data2); 
-					    document.getElementById('result2').innerHTML = 
-					    'Сегодня мы спешим поздравить наших сообщников с ДНЕМ РОЖДЕНИЯ!!! ' + "\r\n" + '' ;
-                        
-
-
-					    var out = '';
-					    var attachments = '';
-					    var photos = '';
-					    for (var i in data2.response.items) {
-					    	//y=i+1;
-					        //out += ' [id'+data2.response.items[i].id+'|' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 '] '+ 	  '';
-					        out += '@id'+data2.response.items[i].id+' (' + data2.response.items[i].first_name + ' '+data2.response.items[i].last_name+ 	 ') '+ 	  '';
-					    
-					        if(data2.response.items[i].photo_id != "undefined") {
-					        	attachments += 'photo'+data2.response.items[i].photo_id +',';
-					        	photos += '<a target="_blank" href="'+data2.response.items[i].photo_200+'"><img src="'+data2.response.items[i].photo_200 +'" alt="" width="75"></a>';
-					        }
-					        
-
-					    }
-					    document.getElementById('result2').innerHTML += out;
-					    document.getElementById('result2').innerHTML +=  "\r\n" +  "\r\n" + 
-					    'Пусть неожиданным сюрпризом ' + "\r\n" + 
-                        'Вас жизнь сегодня удивит! ' + "\r\n" + 
-                        'Наполнит сердце оптимизмом, ' + "\r\n" + 
-                        'Мечты и грезы воплотит! ' + "\r\n" + 
-                        'Вас поздравляем с Днём Рождения, ' + "\r\n" + 
-                        'Пускай сопутствует всегда, ' + "\r\n" + 
-                        'Достойным целям всем - везенье, ' + "\r\n" + 
-                        'И пусть замедлят ход года!' + "\r\n" + "\r\n" + '';
-                        
-					    document.getElementById('photos').innerHTML += photos;
-					    document.getElementById('attachments').innerHTML += attachments;
-
-					    
-
-		});
-
-}
 
 
 
-function dump(obj,id='result1') {
-		    var out = '';
-		    for (var i in obj) {
-		        out += i + ": " + obj[i] + "\n";
-		    }
 
-		    // alert(out);
-
-		    // or, if you wanted to avoid alerts...
-
-		    var pre = document.createElement(id);
-		    pre.innerHTML = out;
-		    document.body.appendChild(pre);
-}
-
-function copyText() {
-			//нашли наш контейнер
-		  var ta = document.getElementById('result2'); 
-		  //производим его выделение
-		  var range = document.createRange();
-		  range.selectNode(ta); 
-		  window.getSelection().addRange(range); 
-		 
-		  //пытаемся скопировать текст в буфер обмена
-		  try { 
-		    document.execCommand('copy'); 
-		    alert('Скопировано.'); 
-		  } catch(err) { 
-		    alert('Не удалось скопировать, скопируйте вручную.'); 
-		  } 
-		  //очистим выделение текста, чтобы пользователь "не парился"
-		  window.getSelection().removeAllRanges();
-
-}
-
-function wallPost(group_id) {
-	//alert('группа: ' + group_id);
-
-    p_date =  parseInt(new Date(document.getElementById('datetime').value).getTime()/1000);
-	
-	group_id = -group_id;
-	mymessage = document.getElementById('result2').value;
-	mymessage = mymessage.replace(/\<br\>/g,'') ;
-	myattach = document.getElementById('attachments').innerHTML;
-
-	VK.api("wall.post", {"owner_id": group_id, friends_only: '0', from_group:1, mark_as_ads:0,publish_date: p_date, message: mymessage, attachments : myattach}, function (data3) {
-			//console.log(data3);
-
-			if(typeof(data3.error) != "undefined" && data3.error !== null ) {
-				alert('Ошибка или отмена размещения поста. Видимо не хватает прав.');
-			}
-			else {
-				alert('Запись опубликована.');
-			}
-			
-			
-	});	
-}
-
-// ставим дату публикации на завтра
-
-var tzoffset = (new Date()).getTimezoneOffset() * 60000 ;  //offset in milliseconds
-var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
-var dtlInput = document.querySelector('input[type="datetime-local"]');
-var my0830 =  localISOTime.slice(0,11) +'08:30' // ставим время 8:30
-dtlInput.value = my0830;
 
 
 
