@@ -1,0 +1,68 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+ 
+    <title>Wall Poster ВКонтакте</title>  
+    <meta charset="utf-8">
+    <script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>  
+ 
+</head>  
+<body>  
+ 
+  <button onclick="authorizeVK()">Войти через ВКонтакте</button>  
+
+  <script type="text/javascript">  
+ 
+    VK.init({  
+ 
+      apiId: '51939417'  
+ 
+    });  
+ 
+  
+ 
+    function authorizeVK() {  
+ 
+      VK.Auth.login(function(response) {  
+ 
+        if (response.session) {  
+ 
+          // Авторизация прошла успешно  
+ 
+          var accessToken = response.session.access_token;  
+ 
+          var userId = response.session.mid;  
+ 
+          // Дополнительные действия после авторизации  
+ 
+          console.log('Access token:', accessToken);  
+ 
+          console.log('User ID:', userId);  
+ 
+        } else {  
+ 
+          // Авторизация не удалась  
+ 
+          console.log('Авторизация не удалась');  
+ 
+        }  
+ 
+      });  
+ 
+    }  
+ 
+  </script>  
+  
+  <!--
+<h1>Опубликовать запись на своей стене ВКонтакте</h1>
+<div id="auth-container"><button onclick="auth()">Авторизация</button></div>
+<div id="form-container">
+    <textarea id="post-textarea" placeholder="Напишите ваш пост..."></textarea><br/>
+    <button onclick="publishPost()">Опубликовать</button>
+</div>
+-->
+
+ 
+</body>  
+ 
+</html>
